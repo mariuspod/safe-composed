@@ -1,0 +1,53 @@
+TRANSACTION_SERVICE_URL=http://transaction-service:8000
+
+## Feature Flags
+FEATURE_FLAG_NESTED_DECODING=true
+
+SCHEME=http
+# Random string (generated with openssl rand -base64 32)
+ROCKET_SECRET_KEY=
+ROCKET_LOG_LEVEL=normal
+ROCKET_PORT=3666
+ROCKET_ADDRESS=0.0.0.0
+WEBHOOK_TOKEN=some_random_token
+#Rocket logs are noise-y, this value filters the logs for errors and our perf monitor
+#Set to "debug" when developing
+RUST_LOG=safe_client_gateway=error,safe_client_gateway::monitoring=info
+LOG_ALL_ERROR_RESPONSES=true
+
+## Time outs for caches (all have defaults in the code)
+## The unit of these values is "seconds"
+# cache
+#SAFE_INFO_CACHE_DURATION=1
+#ADDRESS_INFO_CACHE_DURATION=1
+#TOKEN_INFO_CACHE_DURATION=1
+#EXCHANGE_API_CACHE_DURATION=1
+#REQUEST_CACHE_DURATION=1
+#ABOUT_CACHE_DURATION=1
+#BALANCES_REQUEST_CACHE_DURATION=1
+#SAFE_APP_MANIFEST_CACHE_DURATION=1
+#REQS_ERROR_CACHE_DURATION=1
+#INDEFINITE_TIMEOUT=1 # long cache duration of your choice
+#SHORT_ERROR_DURATION=1
+#LONG_ERROR_DURATION=1
+
+## Http request time outs
+## The unit of these values is "milliseconds"
+INTERNAL_CLIENT_CONNECT_TIMEOUT=10000
+SAFE_APP_INFO_REQUEST_TIMEOUT=10000
+
+## Redis
+REDIS_URL=redis://redis
+#REDIS_SCAN_COUNT=300
+
+## Miscellaneous config
+#NATIVE_COIN_DECIMALS=18
+#NATIVE_COIN_SYMBOL=ETH
+#NATIVE_COIN_NAME=Ether
+CHAIN_ID=1 # mainnet
+
+## Exchange rate API: https://exchangeratesapi.io/
+EXCHANGE_API_BASE_URL=http://api.exchangeratesapi.io/latest
+EXCHANGE_API_KEY=
+
+RUST_BACKTRACE=full

@@ -1,3 +1,6 @@
 client-gateway
 react
 transaction-service
+.gnosis-safe-react-env
+.gnosis-safe-client-gateway-env
+.gnosis-safe-transaction-service-env
