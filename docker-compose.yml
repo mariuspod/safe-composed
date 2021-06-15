@@ -1,0 +1,90 @@
+version: '3.7'
+
+volumes:
+  nginx-shared:
+  postgres-data:
+
+services:
+  redis:
+    image: redis:5-alpine
+    ports:
+      - "6379:6379"
+
+  nginx:
+    image: nginx:alpine
+    hostname: nginx
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./transaction-service/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx-shared:/nginx
+    depends_on:
+      - transaction-service
+
+  db:
+    image: postgres:10-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=gnosis-safe
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  client-gateway:
+    build:
+      context: client-gateway
+      dockerfile: Dockerfile
+    env_file:
+      - .gnosis-safe-client-gateway-env
+    depends_on:
+      - redis
+    ports:
+      - "3666:3666"
+
+  react:
+    build:
+      context: react
+      dockerfile: Dockerfile
+    env_file:
+      - .gnosis-safe-react-env
+    ports:
+      - "3000:3000"
+
+  transaction-service:
+    build:
+      context: transaction-service
+      dockerfile: docker/web/Dockerfile
+    env_file:
+      - .gnosis-safe-transaction-service-env
+    depends_on:
+      - db
+      - redis
+    working_dir: /app
+    ports:
+      - "8888:8888"
+    volumes:
+      - nginx-shared:/nginx
+    command: docker/web/run_web.sh
+
+  worker: &worker
+    build:
+      context: transaction-service
+      dockerfile: docker/web/Dockerfile
+    env_file:
+      - .gnosis-safe-transaction-service-env
+    depends_on:
+      - db
+      - redis
+    command: docker/web/celery/worker/run.sh
+
+  scheduler:
+    <<: *worker
+    command: docker/web/celery/scheduler/run.sh
+
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    command: -d --defaultBalanceEther 10000 -a 10 --noVMErrorsOnRPCResponse --gasLimit 10000000 --host 0.0.0.0 --chainId 1337
+    ports:
+      - "8545:8545"
