@@ -1,3 +1,5 @@
+DOTENV_CONFIG_PATH=/app/.gnosis-safe-react-env
+
 # You can leave this empty for rinkeby or use "mainnet"
 REACT_APP_NETWORK=
 
@@ -30,5 +32,5 @@ REACT_APP_GNOSIS_APPS_URL=https://safe-apps.staging.gnosisdev.com
 # Contracts Addresses
 REACT_APP_SPENDING_LIMIT_MODULE_ADDRESS=0x9e9Bf12b5a66c0f0A7435835e0365477E121B110
 
-CLIENT_GATEWAY_URL=http://client-gateway:3666/v1
-TX_SERVICE_URL=http://transaction-service:8000/api/v1
+REACT_APP_CLIENT_GATEWAY_URL=http://localhost:3666/v1
+REACT_APP_TX_SERVICE_URL=http://transaction-service:8888/api/v1

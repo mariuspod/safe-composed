@@ -1,4 +1,4 @@
-TRANSACTION_SERVICE_URL=http://transaction-service:8000
+TRANSACTION_SERVICE_URL=http://transaction-service:8888
 
 ## Feature Flags
 FEATURE_FLAG_NESTED_DECODING=true
